@@ -22,7 +22,7 @@ export const CoursesPage: FC = () => {
           <CourseBrowserSection reporter={setSelectedCourse} selectedSubject={selectedSubject} />
         </SectionContainer>
       </Col>
-      <Col lg="3" xl="2">
+      <Col lg="4" xl="3">
         <SectionContainer>
           <CourseInfoSection course={selectedCourse} />
         </SectionContainer>

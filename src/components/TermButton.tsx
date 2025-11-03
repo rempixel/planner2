@@ -65,6 +65,7 @@ export const TermButton: FC<TermButtonProps> = ({
     return (
       <div
         // TODO: Use screenreader testing to make this all read properly.
+        // Remy TODO: add icons to not be color reliant.
         aria-label={isDisabled ? 'Unavailable term' : 'Term'}
         className={`border border-secondary rounded-5 text-black bg-${color}-subtle p-1${isDisabled ? ' btn disabled' : ''}`}
       >

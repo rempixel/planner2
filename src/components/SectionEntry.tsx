@@ -6,7 +6,9 @@ import { Time } from '.';
 
 export const SectionEntry: FC<{ readonly section: CourseSection }> = ({ section }) => {
   return (
-    <Card>
+    <Card 
+    style={{margin: '2% auto',}}
+    >
       <CardBody>
         <CardTitle tag="p"> {section.term} - {section.instructors} </CardTitle>
         <ul>
