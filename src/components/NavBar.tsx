@@ -1,7 +1,8 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, ReactNode, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { useApp, useUpdateApp } from '../providers';
+import { BSIcon } from '.';
 
 export const NavBar: FC = () => {
   const { navbarCollapsed } = useApp();
@@ -16,8 +17,16 @@ export const NavBar: FC = () => {
       <NavbarBrand href="/">Planner</NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse navbar isOpen={navbarCollapsed}>
-        <div className='ms-auto' />
+        <div className="ms-auto" />
         <Nav navbar id="navbar" pills>
+          <NavbarButton
+            href="https://github.com/ZenIsBestWolf/planner2"
+            label={
+              <>
+                <BSIcon name="bi-braces" /> Code
+              </>
+            }
+          />
           <NavbarButton destination="/courses" label="Courses" />
           <NavbarButton destination="/info" label="Info" />
           <NavbarButton destination="/times" label="Times" />
@@ -29,25 +38,28 @@ export const NavBar: FC = () => {
 };
 
 interface NavbarButtonProps {
-  readonly destination: string;
-  readonly label: string;
+  readonly destination?: string;
+  readonly label: ReactNode;
+  readonly href?: string;
 }
 
-const NavbarButton: FC<NavbarButtonProps> = ({ destination, label }) => {
+const NavbarButton: FC<NavbarButtonProps> = ({ destination, label, href }) => {
   const navigate = useNavigate();
 
   const navHandler = useCallback(
     (e: React.MouseEvent) => {
-      e.preventDefault();
+      if (destination) {
+        e.preventDefault();
 
-      void navigate(destination);
+        void navigate(destination);
+      }
     },
     [destination, navigate],
   );
 
   return (
     <NavItem>
-      <NavLink onClick={navHandler} href="#">
+      <NavLink onClick={navHandler} href={href ?? '#'}>
         {label}
       </NavLink>
     </NavItem>

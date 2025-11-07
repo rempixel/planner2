@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { Capacity, Course, CourseSection, CourseTime, TermPeriod, TermStatus } from './models/Schedule';
+import { Capacity, Course, CourseSection, TermPeriod, TermStatus } from './models/Schedule';
 
 export const useObjectState = <T extends object>(
   initialState: T,
@@ -76,4 +76,5 @@ export const getCourseTerms = (course: Course): TermPeriod[] => [
   ...new Set(course.sections.map((s) => s.term)),
 ];
 
-export const capacityToString = (capacity: Capacity): string => (`${capacity.remaining}/${capacity.maximum}`);
+export const capacityToString = (capacity: Capacity): string =>
+  `${capacity.remaining}/${capacity.maximum}`;

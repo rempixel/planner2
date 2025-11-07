@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { createContext, FC, useCallback, useContext, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
 import { Container, Spinner } from 'reactstrap';
 import { pullSchedule } from './API';
@@ -11,6 +11,8 @@ import { TimesPage } from './pages/TimesPage';
 import { Application, ApplicationContext, SchedulerContext } from './providers';
 import { useObjectState } from './utils';
 import { Disclaimer } from './components/Disclaimer';
+
+const LoadingContext = createContext(true);
 
 export const App: FC = () => {
   const [schedule, setSchedule] = useState<Schedule>({} as never);
@@ -30,7 +32,11 @@ export const App: FC = () => {
     setLoading(false);
   }, []);
 
+  // Initial kickoff to pull schedule
   useEffect(() => {
+    // TODO: Handle "Calling setState synchronously within an effect can trigger cascading renders" error
+    // This sounds rather critical to fix
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void refreshSchedule();
 
     const existingPreferences = localStorage.getItem('preferences');
@@ -39,10 +45,29 @@ export const App: FC = () => {
     }
   }, [rawSetApplication, refreshSchedule]);
 
+  // Watch and update user preferences
   useEffect(() => {
     localStorage.setItem('preferences', JSON.stringify(application));
   }, [application]);
 
+  return (
+    <ApplicationContext.Provider value={{ application, setApplication }}>
+      <SchedulerContext.Provider value={{ schedule, refreshSchedule }}>
+        <a href="#main" className="sr-only">
+          Skip to main content
+        </a>
+        <Disclaimer />
+        <NavBar />
+        <LoadingContext.Provider value={loading}>
+          <InnerAppContainer />
+        </LoadingContext.Provider>
+      </SchedulerContext.Provider>
+    </ApplicationContext.Provider>
+  );
+};
+
+const InnerAppContainer: FC = () => {
+  const loading = useContext(LoadingContext);
   if (loading) {
     return (
       <main className="position-absolute top-50 start-50 translate-middle text-center">
@@ -55,23 +80,14 @@ export const App: FC = () => {
   }
 
   return (
-    <ApplicationContext.Provider value={{ application, setApplication }}>
-      <SchedulerContext.Provider value={{ schedule, refreshSchedule }}>
-        <a href="#main" className="sr-only">
-          Skip to main content
-        </a>
-        <Disclaimer />
-        <NavBar />
-        <Container tag="main" id="main" fluid>
-          <Routes>
-            <Route index element={<CoursesPage />} />
-            <Route path="/courses" element={<CoursesPage />} />
-            <Route path="/info" element={<InfoPage />} />
-            <Route path="/times" element={<TimesPage />} />
-            <Route path="/schedules" element={<SchedulesPage />} />
-          </Routes>
-        </Container>
-      </SchedulerContext.Provider>
-    </ApplicationContext.Provider>
+    <Container tag="main" id="main" fluid>
+      <Routes>
+        <Route index element={<CoursesPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/info" element={<InfoPage />} />
+        <Route path="/times" element={<TimesPage />} />
+        <Route path="/schedules" element={<SchedulesPage />} />
+      </Routes>
+    </Container>
   );
 };
