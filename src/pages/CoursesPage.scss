@@ -1,0 +1,17 @@
+.courseInfoSection {
+  &.courseSectOpen {
+    transition: flex 0.60s ease, max-width 0.60s ease, opacity 0.55s ease;
+    opacity: 1;
+    overflow: visible;
+  }
+  &.courseSectClosed {
+    flex: 0 0 0;
+    max-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: flex 0.30s ease, max-width 0.30s ease, opacity 0.25s ease;
+  }
+}
+
