@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Col, ListGroup, Row } from 'reactstrap';
+import { Button, Col, Collapse, ListGroup, Row } from 'reactstrap';
 import { CourseRow } from '../components/CourseRow';
 import { SubjectRow } from '../components/SubjectRow';
 import { Course, Subject } from '../models/Schedule';
@@ -10,6 +10,8 @@ import { SectionEntry } from '../components/SectionEntry';
 export const CoursesPage: FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | undefined>();
   const [selectedSubject, setSelectedSubject] = useState<Subject | undefined>();
+  const [isCollapsed, setCollapsed] = useState(false);
+  const toggleOpen = () => {setCollapsed(!isCollapsed)}
   return (
     <Row className="border-bottom border-dark">
       <Col md="4" lg="3" xl="2" className="p-0">
@@ -22,13 +24,16 @@ export const CoursesPage: FC = () => {
           <CourseBrowserSection reporter={setSelectedCourse} selectedSubject={selectedSubject} />
         </SectionContainer>
       </Col>
-      <Col lg="4" xl="3">
-        <SectionContainer>
-          <CourseInfoSection course={selectedCourse} />
-        </SectionContainer>
-      </Col>
+      <Collapse isOpen={isCollapsed}> 
+        <Col lg="4" xl="3">
+          <SectionContainer>
+            <CourseInfoSection course={selectedCourse} />
+          </SectionContainer>
+        </Col>
+      </Collapse>
+      
     </Row>
-  );
+  ); //When you click on a subject, it uncollapses the section container?
 };
 
 export type CourseBrowserReducerAction = 'addCourse' | 'removeCourse' | 'selectCourse';
