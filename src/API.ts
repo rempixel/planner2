@@ -47,7 +47,10 @@ class RequestError extends Error {
 export const pullSchedule = async (): Promise<Schedule> => {
   let data: RemoteResponse;
   // TODO: this could be better lord.
-  const url = window.location.hostname === 'localhost' ? `http://localhost:8081` : `https://gcbp.wpi.institute`
+  const url =
+    globalThis.location.hostname === 'localhost'
+      ? `http://localhost:8081`
+      : `https://gcbp.wpi.institute`;
 
   // const response = await fetch(`https://courselistings.wpi.edu/assets/prod-data.json`);
   const response = await fetch(`${url}/assets/prod-data.json`);
@@ -379,7 +382,7 @@ const parseEntry = (
     patterns,
     instructors,
     format,
-    // DEBUG. WILL INCREASE MEMORY USAGE DRASTICALLY. DO NOT LEAVE IN FOR PROD.
+    // TODO: DEBUG. WILL INCREASE MEMORY USAGE DRASTICALLY. DO NOT LEAVE IN FOR PROD.
     raw,
   };
 

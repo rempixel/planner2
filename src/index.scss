@@ -1,0 +1,49 @@
+@use 'sass:color';
+
+// Theme Colors
+$primary: #AC2B37; // WPI Red
+$secondary: #A9B0B7;
+$success: #198754;
+$info: #175fb1;
+$warning: #df8c11;
+$danger: $primary;
+$light: #f0f0e6;
+$dark: #231f20;
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+$bootstrap-icons-font-dir: "../node_modules/bootstrap-icons/font/fonts";
+
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons";
+
+.btn .material-icons
+{
+  display: inline-block;
+  vertical-align: middle;
+  padding-bottom: 0;
+  margin-top: -1px;
+}
+
+h1, h2, h3 {
+  line-height: 1.2
+}
+
+a {
+  text-decoration: none;
+}
+
+#main {
+  overflow: auto;
+  height: 96vh;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}

@@ -43,6 +43,11 @@ export default {
     historyApiFallback: true,
     port: 8080,
     hot: true,
+    client: {
+      overlay: {
+        warnings: false,
+      },
+    },
   },
   plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
   module: {

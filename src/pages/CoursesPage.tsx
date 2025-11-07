@@ -120,7 +120,9 @@ const SubjectBrowserSection: FC<SubjectBrowserSectionProps> = ({ reporter }) => 
       {subjects.map((subject, idx) => {
         return (
           <SubjectRow
-            report={() => reporter(subject)}
+            report={() => {
+              reporter(subject);
+            }}
             subject={subject}
             key={`subject-${subject.code}`}
             isStriped={idx % 2 === 1}
@@ -153,7 +155,9 @@ const CourseInfoSection: FC<CourseInfoSectionProps> = ({ course }) => {
       </p>
       <hr />
       <h4>Sections</h4>
-      {course.sections.map((section, idx) => <SectionEntry section={section} key={idx} />)}
+      {course.sections.map((section, idx) => (
+        <SectionEntry section={section} key={idx} />
+      ))}
       <hr />
       <h4>Course Description</h4>
       <div dangerouslySetInnerHTML={{ __html: course.description }} />

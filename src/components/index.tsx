@@ -3,6 +3,7 @@ import { Button, Input } from 'reactstrap';
 import { CourseTime } from '../models/Schedule';
 import { useApp } from '../providers';
 
+export const BSIcon: FC<{ readonly name: string }> = ({ name }) => <i className={`bi ${name}`} />;
 /**
  * The props for utilizing {@Link CheckboxButton}
  *
@@ -42,7 +43,7 @@ export const CheckboxButton: FC<CheckboxButtonProps> = ({
   inputClasses,
   onChange,
   ariaLabel,
-}: CheckboxButtonProps) => {
+}) => {
   const idSuffix = id ?? crypto.randomUUID();
   return (
     <>
@@ -87,7 +88,8 @@ export const Time: FC<TimeProps> = ({ time }: TimeProps) => {
 
   return (
     <>
-      {hour < 10 && !showMeridian ? `0${hour}` : hour}:{time.minute < 10 ? `0${time.minute}` : time.minute}
+      {hour < 10 && !showMeridian ? `0${hour}` : hour}:
+      {time.minute < 10 ? `0${time.minute}` : time.minute}
       {showMeridian && hour < 12 ? ' AM' : ' PM'}
     </>
   );
