@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, Col, Collapse, ListGroup, Row } from 'reactstrap';
 import { CourseRow } from '../components/CourseRow';
 import { SubjectRow } from '../components/SubjectRow';
@@ -11,29 +11,42 @@ export const CoursesPage: FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<Course | undefined>();
   const [selectedSubject, setSelectedSubject] = useState<Subject | undefined>();
   const [isCollapsed, setCollapsed] = useState(false);
-  const toggleOpen = () => {setCollapsed(!isCollapsed)}
+
+  useEffect(() => {
+    if (selectedCourse) {
+      setCollapsed(true);
+    }
+  }, [selectedCourse]);
+
   return (
-    <Row className="border-bottom border-dark">
-      <Col md="4" lg="3" xl="2" className="p-0">
-        <SectionContainer>
-          <SubjectBrowserSection reporter={setSelectedSubject} />
-        </SectionContainer>
-      </Col>
-      <Col className="border-start border-end border-dark p-0">
-        <SectionContainer>
-          <CourseBrowserSection reporter={setSelectedCourse} selectedSubject={selectedSubject} />
-        </SectionContainer>
-      </Col>
-      <Collapse isOpen={isCollapsed}> 
-        <Col lg="4" xl="3">
+      <div 
+      style= {{
+        width: '100%',
+        minHeight:'80vh', 
+      }}
+      className= "border-bottom border-dark d-flex"
+      >
+        <Col md="4" lg="3" xl="2" className="p-0">
           <SectionContainer>
-            <CourseInfoSection course={selectedCourse} />
+            <SubjectBrowserSection reporter={setSelectedSubject} />
           </SectionContainer>
         </Col>
-      </Collapse>
-      
-    </Row>
+        <Col className="border-start border-end border-dark p-0">
+          <SectionContainer>
+            <CourseBrowserSection reporter={setSelectedCourse} selectedSubject={selectedSubject} />
+          </SectionContainer>
+        </Col>
+        <Collapse style={{maxWidth: '25vw'}} className="p-2" isOpen={isCollapsed} horizontal={true}> 
+          <Col>
+            <SectionContainer>
+              <CourseInfoSection course={selectedCourse} />
+            </SectionContainer>
+          </Col>
+        </Collapse>
+      </div>
   ); //When you click on a subject, it uncollapses the section container?
+  // CSS Flexbox approach because BootStrap Col/Rows are stiff. 
+  // TODO: fix Mobile representation. Maybe make it use Row instead of div when on a vertical screen.
 };
 
 export type CourseBrowserReducerAction = 'addCourse' | 'removeCourse' | 'selectCourse';
